@@ -1,0 +1,35 @@
+[
+  {"model": "events.category", "pk": 1, "fields": {"name": "Food Pantry", "slug": "food-pantry"}},
+  {"model": "events.category", "pk": 2, "fields": {"name": "Health", "slug": "health"}},
+  {"model": "events.category", "pk": 3, "fields": {"name": "Cultural", "slug": "cultural"}},
+
+  {"model": "events.organization", "pk": 1, "fields": {
+    "name": "Omaha Public Library",
+    "description": "Libraries, learning events and workshops.",
+    "website": "https://omahalibrary.org",
+    "email": "info@omahalibrary.org",
+    "is_verified": true
+  }},
+  {"model": "events.organization", "pk": 2, "fields": {
+    "name": "Heartland Food Network",
+    "description": "Food access and food pantry resources.",
+    "website": "https://example.org",
+    "email": "contact@example.org",
+    "is_verified": true
+  }},
+
+  {"model": "events.location", "pk": 1, "fields": {
+    "name": "Downtown Library",
+    "address1": "215 S 15th St",
+    "city": "Omaha",
+    "state": "NE",
+    "postal_code": "68102"
+  }},
+  {"model": "events.location", "pk": 2, "fields": {
+    "name": "Midtown Community Center",
+    "address1": "1234 Center St",
+    "city": "Omaha",
+    "state": "NE",
+    "postal_code": "68106"
+  }}
+]
