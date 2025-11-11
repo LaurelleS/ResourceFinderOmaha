@@ -25,8 +25,8 @@ urlpatterns = [
     # automatically bring user to login page
     path('', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
     path('admin/', admin.site.urls),
-    path('account/', include('django.contrib.auth.urls')), # include django views and routes (account/login etc..)
+    path('accounts/', include('django.contrib.auth.urls')), # include django views and routes (account/login etc..)
     path('signup/', user_views.signup, name='signup'),
-    path('home/', event_views.home, name='home'),
+    path('accounts/profile/', event_views.home, name='home'),
     path('signuporgs/', user_views.signuporgs, name='signuporgs')
 ]
