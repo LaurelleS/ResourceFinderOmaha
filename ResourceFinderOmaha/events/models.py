@@ -1,6 +1,7 @@
 
 from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import User
 
 
 
@@ -15,6 +16,7 @@ class TimeStamped(models.Model):
 
 class Organization(TimeStamped):
     #infomation from the organization hosting an event
+    org = models.OneToOneField(User, on_delete=models.CASCADE) # link extra info to user
     name = models.CharField(max_length=150, unique=True)
     description = models.TextField(blank=True)
     website = models.URLField(blank=True)

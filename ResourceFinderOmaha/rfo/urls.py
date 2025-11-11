@@ -28,4 +28,5 @@ urlpatterns = [
     path('account/', include('django.contrib.auth.urls')), # include django views and routes (account/login etc..)
     path('signup/', user_views.signup, name='signup'),
     path('home/', event_views.home, name='home'),
+    path('signuporgs/', user_views.signuporgs, name='signuporgs')
 ]

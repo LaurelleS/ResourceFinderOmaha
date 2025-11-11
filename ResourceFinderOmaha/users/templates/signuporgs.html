@@ -81,10 +81,22 @@
 <body>
     <div class="main">
         <h1>ResourceFinderOmaha</h1>
-        <h3>Enter your login credentials</h3>
+        <h3>Create Your Organization's Account</h3>
 
-        <form method='POST' action="">
+        <form method="POST" action="">
             {% csrf_token %}
+            <label for="first">
+                Name:
+            </label>
+            <input type="text" id="name" name="name" 
+                placeholder="Enter your organization's name" required>
+            
+            <label for="desc">
+                Description:
+            </label>
+            <input type="text" id="desc" name="desc" 
+                placeholder="Short description of your organization" required>
+
             <label for="first">
                 Username:
             </label>
@@ -96,25 +108,30 @@
             </label>
             <input type="password" id="password" name="password" 
                 placeholder="Enter your Password" required>
+            
+            <label for="email">
+                Email:
+            </label>
+            <input type="email" id="email" name="email" 
+                placeholder="Enter your Email" required>
+
+            <label for="phone">
+                Phone Number:
+            </label>
+            <input type="tel" id="phone" name="phone" 
+                placeholder="Enter your phone number" required>
 
             <div class="wrap">
                 <button type="submit">
-                    Log In
+                    Sign Up
                 </button>
             </div>
         </form>
         
-        <p>Users:
+        <p>Have An Account?
             {% csrf_token %}
-            <a href="{% url 'signup' %}" style="text-decoration: none;">
-                Create an account
-            </a>
-        </p>
-
-        <p>Organizations:
-            {% csrf_token %}
-            <a href="{% url 'signuporgs' %}" style="text-decoration: none;">
-                Create an account
+            <a href="{% url 'login' %}" style="text-decoration: none;">
+                Log In
             </a>
         </p>
     </div>
