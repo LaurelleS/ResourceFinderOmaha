@@ -106,7 +106,7 @@
         
         <p>Not registered?
             {% csrf_token %}
-            <a href="#" style="text-decoration: none;" action="{% url 'signup' %}">
+            <a href="{% url 'signup' %}" style="text-decoration: none;">
                 Create an account
             </a>
         </p>
