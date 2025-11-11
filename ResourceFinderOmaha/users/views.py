@@ -22,7 +22,7 @@ def login(request):
             return redirect('/login/')
         else:
             login(request, user)
-            return redirect('/home')
+            return redirect('/home/')
     
     return render(request, 'login.html')
 
