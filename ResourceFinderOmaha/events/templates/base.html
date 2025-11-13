@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{% block title %}ResourceFinderOmaha{% endblock %}</title>
+
+  <!-- Simple prototype styling -->
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fa;
+      color: #1f2933;
+    }
+
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    header nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-size: 0.95rem;
+    }
+
+    header nav a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem 3rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: #52606d;
+      margin-bottom: 1.5rem;
+    }
+
+    .search-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.08);
+      margin-bottom: 1.5rem;
+      border: 1px solid #e4e7eb;
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .search-row input[type="text"],
+    .search-row select {
+      flex: 1 1 200px;
+      padding: 0.55rem 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid #cbd2d9;
+      font-size: 0.95rem;
+    }
+
+    .search-row button {
+      padding: 0.55rem 1.15rem;
+      border-radius: 0.5rem;
+      border: none;
+      background: #2f855a;
+      color: white;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .search-row button:hover {
+      background: #276749;
+    }
+
+    .pill-row {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #52606d;
+    }
+
+    .pill-row span {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      background: #e4f0ff;
+      color: #1f4f7f;
+      margin-right: 0.4rem;
+    }
+
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .event-card {
+      background: white;
+      border-radius: 0.75rem;
+      border: 1px solid #e4e7eb;
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .event-title {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .event-meta {
+      font-size: 0.85rem;
+      color: #616e7c;
+    }
+
+    .event-tags {
+      margin-top: 0.35rem;
+      font-size: 0.8rem;
+    }
+
+    .event-tags span {
+      display: inline-block;
+      padding: 0.12rem 0.5rem;
+      border-radius: 999px;
+      background: #edf2ff;
+      color: #4257b2;
+      margin-right: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .event-footer {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: #52606d;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #616e7c;
+    }
+
+    .empty-state strong {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <header>
+    <div class="logo">ResourceFinderOmaha</div>
+    <nav>
+      {% csrf_token %}
+      <!-- these routes already exist in urls.py -->
+      <a href="{% url 'home' %}">Home</a>
+      <a href="#">Search</a>
+      <a href="#">My Account</a>
+      {% if is_org %}
+      <a href="#">My Events</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

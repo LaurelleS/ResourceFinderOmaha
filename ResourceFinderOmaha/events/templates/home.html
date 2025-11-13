@@ -1,10 +1,97 @@
-<!doctype html>
-<html lang="en-US">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Document title</title>
+{% extends "base.html" %}
 
-</head>
-<h1>This is the home page.</h1>
-</html>
+{% block title %}Home • ResourceFinderOmaha{% endblock %}
+
+{% block content %}
+  <h1 class="page-title">Find events and resources in Omaha</h1>
+  <p class="page-subtitle">
+    Search by name or filter by category to discover local food pantries, classes,
+    support services, and more.
+  </p>
+
+  <!-- Search card -->
+  <section class="search-card">
+    <form method="get" action="{% url 'home' %}">
+      <div class="search-row">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search by event or organization name…"
+          value="{{ query|default:'' }}"
+        />
+
+        <select name="category">
+          <option value="">All categories</option>
+          {% for cat in categories %}
+            <option value="{{ cat.slug }}"
+              {% if cat.slug == selected_category %}selected{% endif %}
+            >{{ cat.name }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit">Search</button>
+      </div>
+    </form>
+
+    <div class="pill-row">
+      {% if query or selected_category %}
+        <span>Filters applied</span>
+      {% else %}
+        <span>Tip: try “food”, “youth”, or “job training”.</span>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Events list -->
+  {% if events %}
+    <section>
+      <h2 style="font-size:1.1rem; margin-bottom:0.6rem;">
+        {{ events|length }} result{{ events|length|pluralize }} found
+      </h2>
+      <div class="events-grid">
+        {% for event in events %}
+          <article class="event-card">
+            <div class="event-title">{{ event.title }}</div>
+
+            <div class="event-meta">
+              {{ event.start_at|date:"M j, Y · g:i a" }}
+              {% if event.location %}
+                • {{ event.location.name|default:event.location.address1 }}
+              {% endif %}
+            </div>
+
+            {% if event.org %}
+              <div class="event-meta">
+                Hosted by {{ event.org.name }}
+              </div>
+            {% endif %}
+
+            {% if event.categories.all %}
+              <div class="event-tags">
+                {% for cat in event.categories.all %}
+                  <span>{{ cat.name }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="event-footer">
+              {% if event.is_free %}
+                Free event
+              {% else %}
+                Paid event
+              {% endif %}
+              {% if event.capacity %}
+                • Capacity: {{ event.capacity }}
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% else %}
+    <div class="empty-state">
+      <strong>No events match this search yet.</strong>
+      Try clearing filters or using a more general keyword.
+    </div>
+  {% endif %}
+{% endblock %}

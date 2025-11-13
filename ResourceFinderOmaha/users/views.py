@@ -48,7 +48,8 @@ def signup(request):
         )
         user.set_password(password)
         user.save()
-        Group.objects.get(name='Finders').add(user)
+        group = Group.objects.get(name='Finders')
+        group.user_set.add(user)
         return redirect('login')
     
 def signuporgs(request):
@@ -76,6 +77,7 @@ def signuporgs(request):
         )
         org.set_password(password)
         org.save()
-        Group.objects.get(name='Organizations').add(org)
+        group = Group.objects.get(name='Organizations')
+        group.user_set.add(org)
         return redirect('login')
     return render(request, 'signuporgs.html')
