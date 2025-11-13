@@ -23,11 +23,13 @@ def home(request):
     events = events.distinct()
 
     categories = Category.objects.order_by("name")
+    is_org = request.user.groups.filter(name='Organizations').exists()
 
     context = {
         "events": events,
         "categories": categories,
         "query": query,
         "selected_category": category_slug,
+        "is_org": is_org
     }
     return render(request, "home.html", context)

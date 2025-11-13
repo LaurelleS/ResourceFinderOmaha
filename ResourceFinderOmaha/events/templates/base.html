@@ -175,10 +175,14 @@
   <header>
     <div class="logo">ResourceFinderOmaha</div>
     <nav>
+      {% csrf_token %}
       <!-- these routes already exist in urls.py -->
       <a href="{% url 'home' %}">Home</a>
       <a href="#">Search</a>
       <a href="#">My Account</a>
+      {% if is_org %}
+      <a href="#">My Events</a>
+      {% endif %}
     </nav>
   </header>
 
