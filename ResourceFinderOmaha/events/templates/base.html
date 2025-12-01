@@ -84,7 +84,7 @@
       padding: 0.55rem 1.15rem;
       border-radius: 0.5rem;
       border: none;
-      background: #2f855a;
+      background: #4CAF50;
       color: white;
       cursor: pointer;
       font-size: 0.95rem;
@@ -167,6 +167,29 @@
       display: block;
       margin-bottom: 0.3rem;
     }
+    p {
+      display: inline-block;
+    }
+
+
+    #register-button {
+        padding: 7px;
+        border-radius: 10px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        background-color: #4CAF50;
+        width: 20%;
+        font-size: 16px;
+        float: right;
+    }
+
+    #register-button:hover {
+      background: #276749;
+    }
+
   </style>
 
   {% block extra_head %}{% endblock %}
@@ -176,13 +199,11 @@
     <div class="logo">ResourceFinderOmaha</div>
     <nav>
       {% csrf_token %}
+      <p>Welcome {{ user.username }}!</p>
       <!-- these routes already exist in urls.py -->
       <a href="{% url 'home' %}">Home</a>
-      <a href="#">Search</a>
-      <a href="#">My Account</a>
-      {% if is_org %}
       <a href="#">My Events</a>
-      {% endif %}
+      <a href="#">My Account</a>
     </nav>
   </header>
 
