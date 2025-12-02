@@ -1,11 +1,11 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login as auth_login, logout # Delete as auth_login if it doesnt work
 from events.models import Organization
 
 
-def login(request):
+def login(request): # Original was login(request)
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -20,11 +20,16 @@ def login(request):
             # Display an error message if authentication fails (invalid password)
             messages.error(request, "Invalid Password")
             return redirect('/login/')
-        else:
-            login(request, user)
-            return redirect('/home/')
+        #else: # else statement originally here. 
+
+        auth_login(request, user)
+            #return redirect('/home/')
+        
+        if user.groups.filter(name='Organizations').exists(): # Delete this if it doesnt work
+            return redirect('/orgshome/')
+        return redirect('home')
     
-    return render(request, 'login.html')
+    return render(request, 'registration/login.html')
 
 
 
@@ -77,11 +82,24 @@ def signuporgs(request):
         )
         org.set_password(password)
         org.save()
-        group = Group.objects.get(name='Organizations')
-        group.user_set.add(org)
+        group, created = Group.objects.get_or_create(name='Organizations') # Delete get_or_create if it doesnt work / created
+        org.groups.add(group) # groups.user_set.add(org) is original if it doesnt work
+
+        Organization.objects.create(  #Delete all of this if it doesnt work
+            org=org,                    #
+            name=name,                  #
+            description=desc,           #
+            email=email,                #
+            phone=phone,                #
+            is_verified=False,          #
+        )
+
         return redirect('login')
     return render(request, 'signuporgs.html')
 
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def orgshome(request): #Delete this if it doesnt work
+    return render(request, 'orgshome.html')

@@ -23,7 +23,8 @@ from events import views as event_views
 
 urlpatterns = [
     # automatically bring user to login page
-    path('', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('', user_views.login, name='login'),  # Original: path('', auth_views.LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('accounts/login/', user_views.login, name='login'),  # was not here origninally, delete if it doesnt work
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')), # include django views and routes (account/login etc..)
     path('signup/', user_views.signup, name='signup'),
@@ -34,4 +35,5 @@ urlpatterns = [
     path('myevents/', event_views.myevents, name='myevents'),
      path('viewevent/<int:event_id>/', event_views.viewEvent, name='viewEvent'),
     path('logout/', user_views.logout_view, name='logout'),
+    path('orgshome/', user_views.orgshome, name='orgshome'), #Delete this if it doesnt work
 ]
