@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from .models import Event, Category, Registration
+from django.db.models import Q
 from .forms import EventForm
 from django.core.exceptions import PermissionDenied
 
@@ -15,8 +16,8 @@ def home(request):
 
     if query:
         events = events.filter(
-            models.Q(title__icontains=query)
-            | models.Q(org__name__icontains=query)
+            Q(title__icontains=query) |
+            Q(org__name__icontains=query)
         )
 
     if category_slug:
