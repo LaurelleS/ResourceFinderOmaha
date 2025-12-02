@@ -16,6 +16,7 @@
             <div>
                 <a href="{% url 'viewEvent' event.id %}">{{event.title}}</a>
                 <p>{{event.org.name}}</p>
+                <p>@ {{event.location.name}}</p>
             </div>
                 
             <div>
@@ -49,6 +50,7 @@
                     <a href="{% url 'eventDetail' reg.event.id %}">{{reg.event.title}}</a>
         {% endif %}
                     <p>{{reg.event.org.name}}</p>
+                    <p>@ {{reg.event.location.name}}</p></p.>
                 </div>
                 
                 <div>

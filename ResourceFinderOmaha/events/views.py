@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from .models import Event, Category, Registration
+from .models import Event, Category, Registration, Location
 from django.db.models import Q
 from .forms import EventForm
 from django.core.exceptions import PermissionDenied
@@ -123,7 +123,14 @@ def addEvent(request):
     else:
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
+            location_name = form.cleaned_data['location']
+            location, _ = Location.objects.get_or_create(name=location_name,
+                defaults={
+                'city': 'Omaha',
+                'state': 'NE'
+            })
             event = form.save(commit=False)
+            event.location = location
             event.org = request.user.organization
             event.save()
             return redirect('myevents')
