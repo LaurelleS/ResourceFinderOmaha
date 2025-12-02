@@ -3,6 +3,8 @@
   {"model": "events.category", "pk": 2, "fields": {"name": "Health", "slug": "health"}},
   {"model": "events.category", "pk": 3, "fields": {"name": "Cultural", "slug": "cultural"}},
 
+  {"model": "auth.group", "pk": 3, "fields": {"name": "Organization User"}},
+  
   {
     "model": "auth.user",
     "pk": 1,
@@ -214,3 +216,4 @@
     }
   }
 ]
+
