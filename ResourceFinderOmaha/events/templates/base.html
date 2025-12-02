@@ -197,6 +197,11 @@
       background: #95c6ae;
     }
 
+  .form-field {
+    display: block;
+    margin-bottom: 15px;
+  }
+
   </style>
 
   {% block extra_head %}{% endblock %}
@@ -209,7 +214,7 @@
       <p class="hello-name">Welcome {{ user.username }}!</p>
       <!-- these routes already exist in urls.py -->
       <a href="{% url 'home' %}">Home</a>
-      <a href="#">My Events</a>
+      <a href="{% url 'myevents' %}">My Events</a>
       <a href="#">My Account</a>
     </nav>
   </header>

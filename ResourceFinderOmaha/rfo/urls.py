@@ -29,6 +29,8 @@ urlpatterns = [
     path('signup/', user_views.signup, name='signup'),
     path('accounts/profile/', event_views.home, name='home'),
     path('signuporgs/', user_views.signuporgs, name='signuporgs'),
-    path('viewevent/<int:event_id>/', event_views.viewEvent, name='viewEvent'),
+
     path('eventdetail/<int:event_id>/', event_views.eventDetail, name='eventDetail'),
+    path('myevents/', event_views.myevents, name='myevents'),
+     path('viewevent/<int:event_id>/', event_views.viewEvent, name='viewEvent'),
 ]

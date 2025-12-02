@@ -5,3 +5,22 @@
 {% block content %}
 
 <!-- page for orgs to view events they've created and edit them -->
+ 
+<div>
+    <span class="form-field">{{ form.title.label_tag }} {{ form.title }}</span>
+    <span class="form-field">{{ form.description.label_tag }} {{ form.description }}</span>
+    <span class="form-field">{{ form.start_at.label_tag }} {{ form.start_at }}</span>
+    <span class="form-field">{{ form.end_at.label_tag }} {{ form.end_at }}</span>
+    <span class="form-field">{{ form.location.label_tag }} {{ form.location }}</span>
+    <span class="form-field">{{ form.url.label_tag }} {{ form.url }}</span>
+    <span class="form-field">{{ form.capacity.label_tag }} {{ form.capacity }}</span>
+    <span class="form-field">{{ form.is_free.label_tag }} {{ form.is_free }}</span>
+    <span class="form-field">{{ form.categories.label_tag }} {{ form.categories }}</span>
+    <span class="form-field">{{ form.published.label_tag }} {{ form.published }}</span>
+</div>
+
+<div>
+    <button type="submit" class="register-button">Save Changes</button>
+</div>
+
+{% endblock %}

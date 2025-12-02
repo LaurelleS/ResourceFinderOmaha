@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}My Events • ResourceFinderOmaha{% endblock %}
+
+{% block content %}
+
+<div class="search-card">
+    {% if events %}
+    {% for event in events %}
+        {% if is_org %}
+            <div class="search-card">
+                <a href="{% url 'viewEvent' event.id %}">{{event.title}}</a>
+                <p class="hello-name">{{event.org.name}}</p>
+            </div>
+        {% else %}
+            <div>
+                <a href="{% url 'eventDetail' event.id %}">{{event.title}}</a>
+                <p>{{event.org.name}}</p>
+            </div>
+        {% endif %}
+
+    {% endfor %}
+    {% else %}
+        <div class="search-card"><p>No Registered Events to Show</p></div>
+    {% endif %}
+</div>
+
+{% endblock %}

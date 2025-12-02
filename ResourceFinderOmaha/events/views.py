@@ -38,32 +38,28 @@ def home(request):
     return render(request, "home.html", context)
 
 
-def viewEvent(request, event_id):
-    event = get_object_or_404(Event, id=event_id)
-
+def myevents(request):
     user = request.user
-    is_org = user.groups.filter(name='Organizations').exists()
-    is_viewer = user.groups.filter(name='Finders').exists()
+    regs = Registration.objects.filter(user=user, status='registered')
+    events = [r.event for r in regs]
+    is_org = request.user.groups.filter(name='Organizations').exists()
+    context = {
+         "events" : events,
+         "is_org" : is_org
+    }
+    return render(request, 'myevents.html', context)
 
+def viewEvent(request, event_id):
+    event = Event.objects.get(pk=event_id)
     if request.method == 'POST':
-        if not is_org:
-            raise PermissionDenied()
-
-        form = EventForm(request.POST, request.FILES, instance=event)
-
+        form = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('myevents')
     else:
         form = EventForm(instance=event)
-        if is_viewer and not is_org:
-            for field in form.fields.values():
-                field.disabled = True
 
-        context = {
-            'form' : form,
-        }
-        return render(request, 'addEvent.html', context)
+    return render(request, 'viewEvent.html', {'form' : form})
  
 
 def eventDetail(request, event_id):
