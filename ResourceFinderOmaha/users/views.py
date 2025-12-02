@@ -23,6 +23,7 @@ def login(request): # Original was login(request)
         #else: # else statement originally here. 
 
         auth_login(request, user) # Bypass Django's built-in login to customize redirection based on user group 
+        
             #return redirect('/home/')
         
         if user.groups.filter(name='Organizations').exists(): # Delete this if it doesnt work
