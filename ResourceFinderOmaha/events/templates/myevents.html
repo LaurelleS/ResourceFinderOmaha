@@ -8,8 +8,34 @@
 <div style="display: flex; justify-content: center;">
     <a class="register-button" href="{% url 'addEvent' %}">New Event</a>
 </div>
-{% endif %}
 
+<div>
+{% if orgevents %}
+    {% for event in orgevents %}
+            <div class="search-card two-columns">
+            <div>
+                <a href="{% url 'viewEvent' event.id %}">{{event.title}}</a>
+                <p>{{event.org.name}}</p>
+            </div>
+                
+            <div>
+                <p style="text-align: right;">{{event.start_at}} - {{event.end_at}}</p>
+                <p style="text-align: right;">
+                    {% if event.is_free %}
+                        Free event
+                    {% else %}
+                        Paid event
+                    {% endif %}
+                </p>
+            </div>
+            </div>
+    {% endfor %}
+{% else %}
+    <div class="search-card"><p>You haven't created any events.</p></div>
+{% endif %}
+</div>
+
+{% else %}
 <div>
     {% if registrations %}
     {% for reg in registrations %}
@@ -46,12 +72,10 @@
 
     {% endfor %}
     {% else %}
-        {% if is_org %}
-        <div class="search-card"><p>You haven't created any events.</p></div>
-        {% else %}
+        {% if not is_org %}
         <div class="search-card"><p>You haven't registered for any events.</p></div>
         {% endif %}
     {% endif %}
 </div>
-
+{% endif %}
 {% endblock %}

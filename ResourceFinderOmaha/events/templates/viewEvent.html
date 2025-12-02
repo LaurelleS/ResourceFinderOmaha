@@ -7,6 +7,8 @@
 <!-- page for orgs to view events they've created and edit them -->
  
 <div>
+    <form method="post" action="{% url 'addEvent' %}">
+        {% csrf_token %}
     <span class="form-field">{{ form.title.label_tag }} {{ form.title }}</span>
     <span class="form-field">{{ form.description.label_tag }} {{ form.description }}</span>
     <span class="form-field">{{ form.start_at.label_tag }} {{ form.start_at }}</span>
@@ -21,6 +23,8 @@
 
 <div>
     <button type="submit" class="register-button">Save Changes</button>
+    <a class="register-button" href="{% url 'myevents' %}">Back</a>
+</form>
 </div>
 
 {% endblock %}

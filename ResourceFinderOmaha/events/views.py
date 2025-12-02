@@ -54,7 +54,7 @@ def myevents(request):
     else:
         my_events = list(Event.objects.filter(org=user.organization))
         context = {
-            'events' : my_events,
+            'orgevents' : my_events,
             'is_org' : is_org,
         }
 
@@ -71,7 +71,7 @@ def viewEvent(request, event_id):
     else:
         form = EventForm(instance=event)
 
-    return render(request, 'viewEvent.html', {'form' : form})
+        return render(request, 'viewEvent.html', {'form' : form})
  
 
 def eventDetail(request, event_id):
@@ -106,7 +106,7 @@ def eventDetail(request, event_id):
             event=event).exists()
     if already_registered and not messages.get_messages(request):
                 messages.info(request, 'You are already registered for this event')
-                
+
     is_org = request.user.groups.filter(name='Organizations').exists()
     context = {
         "event" : event,
@@ -123,9 +123,13 @@ def addEvent(request):
     else:
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-
-        return redirect('myevents')
+            event = form.save(commit=False)
+            event.org = request.user.organization
+            event.save()
+            return redirect('myevents')
+        else:
+            messages.error(request, "Please correct the errors below.") 
+        return render(request, 'viewEvent.html', {'form' : form})
     
 def delete_reg(request, reg_id):
     reg = get_object_or_404(Registration, id=reg_id)
