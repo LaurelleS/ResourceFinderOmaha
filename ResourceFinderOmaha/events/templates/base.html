@@ -167,12 +167,12 @@
       display: block;
       margin-bottom: 0.3rem;
     }
-    p {
+    #hello-name {
       display: inline-block;
     }
 
 
-    #register-button {
+    .register-button {
         padding: 7px;
         border-radius: 10px;
         margin-top: 15px;
@@ -183,11 +183,18 @@
         background-color: #4CAF50;
         width: 20%;
         font-size: 16px;
-        float: right;
+        text-decoration: none;
+        text-align: center;
+    }
+    .btn--right {
+      float: right
     }
 
-    #register-button:hover {
+    .register-button:hover {
       background: #276749;
+    }
+    .register-button:disabled {
+      background: #95c6ae;
     }
 
   </style>
@@ -199,7 +206,7 @@
     <div class="logo">ResourceFinderOmaha</div>
     <nav>
       {% csrf_token %}
-      <p>Welcome {{ user.username }}!</p>
+      <p class="hello-name">Welcome {{ user.username }}!</p>
       <!-- these routes already exist in urls.py -->
       <a href="{% url 'home' %}">Home</a>
       <a href="#">My Events</a>

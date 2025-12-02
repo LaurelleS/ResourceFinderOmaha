@@ -2,20 +2,50 @@
   {"model": "events.category", "pk": 1, "fields": {"name": "Food Pantry", "slug": "food-pantry"}},
   {"model": "events.category", "pk": 2, "fields": {"name": "Health", "slug": "health"}},
   {"model": "events.category", "pk": 3, "fields": {"name": "Cultural", "slug": "cultural"}},
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "library_admin",
+      "password": "123",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "groups": [3]
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "username": "foodnet_admin",
+      "password": "123",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "groups": [3]
+    }
+  },
 
   {"model": "events.organization", "pk": 1, "fields": {
     "name": "Omaha Public Library",
+    "org": 1,
     "description": "Libraries, learning events and workshops.",
     "website": "https://omahalibrary.org",
     "email": "info@omahalibrary.org",
-    "is_verified": true
+    "is_verified": true,
+    "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
   }},
   {"model": "events.organization", "pk": 2, "fields": {
     "name": "Heartland Food Network",
+    "org": 2,
     "description": "Food access and food pantry resources.",
     "website": "https://example.org",
     "email": "contact@example.org",
-    "is_verified": true
+    "is_verified": true,
+    "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
   }},
 
   {"model": "events.location", "pk": 1, "fields": {
@@ -23,13 +53,112 @@
     "address1": "215 S 15th St",
     "city": "Omaha",
     "state": "NE",
-    "postal_code": "68102"
+    "postal_code": "68102",
+    "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
   }},
   {"model": "events.location", "pk": 2, "fields": {
     "name": "Midtown Community Center",
     "address1": "1234 Center St",
     "city": "Omaha",
     "state": "NE",
-    "postal_code": "68106"
-  }}
+    "postal_code": "68106",
+    "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
+  }},
+   {
+    "model": "events.event",
+    "pk": 1,
+    "fields": {
+      "org": 1,
+      "title": "Storytime at the Library",
+      "description": "Join us for a fun storytime for kids ages 3-7.",
+      "start_at": "2025-12-05T10:00:00Z",
+      "end_at": "2025-12-05T11:00:00Z",
+      "location": 1,
+      "is_free": true,
+      "url": "https://omahalibrary.org/storytime",
+      "capacity": 30,
+      "categories": [3],
+      "is_published": true,
+      "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 2,
+    "fields": {
+      "org": 2,
+      "title": "Holiday Food Pantry",
+      "description": "Providing holiday meals to families in need.",
+      "start_at": "2025-12-06T09:00:00Z",
+      "end_at": "2025-12-06T17:00:00Z",
+      "location": 2,
+      "is_free": true,
+      "url": "https://example.org/holiday-food-pantry",
+      "capacity": 100,
+      "categories": [1, 2],
+      "is_published": true,
+      "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 3,
+    "fields": {
+      "org": 1,
+      "title": "Teen Coding Workshop",
+      "description": "Learn basic Python coding in a fun and interactive workshop.",
+      "start_at": "2025-12-08T13:00:00Z",
+      "end_at": "2025-12-08T15:00:00Z",
+      "location": 1,
+      "is_free": true,
+      "url": "https://omahalibrary.org/coding-workshop",
+      "capacity": 25,
+      "categories": [2, 3],
+      "is_published": true,
+      "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 4,
+    "fields": {
+      "org": 2,
+      "title": "Community Health Fair",
+      "description": "Free health screenings and wellness information.",
+      "start_at": "2025-12-10T10:00:00Z",
+      "end_at": "2025-12-10T16:00:00Z",
+      "location": 2,
+      "is_free": true,
+      "url": "https://example.org/health-fair",
+      "capacity": 150,
+      "categories": [2],
+      "is_published": true,
+      "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 5,
+    "fields": {
+      "org": 1,
+      "title": "Cultural Arts Exhibit",
+      "description": "Explore cultural art pieces from local artists.",
+      "start_at": "2025-12-12T11:00:00Z",
+      "end_at": "2025-12-12T17:00:00Z",
+      "location": 1,
+      "is_free": true,
+      "url": "https://omahalibrary.org/cultural-exhibit",
+      "capacity": 50,
+      "categories": [3],
+      "is_published": true,
+      "created_at": "2025-12-01T12:00:00Z",
+    "updated_at": "2025-12-01T12:00:00Z"
+    }
+  }
 ]

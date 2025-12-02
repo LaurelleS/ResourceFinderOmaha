@@ -1,0 +1,56 @@
+<!-- page for users to view events (no edits allowed) -->
+
+{% extends "base.html" %}
+
+{% block title %}Event • ResourceFinderOmaha{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+  <ul>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<h1>{{ event.title }}</h1>
+
+<p><strong>Organization:</strong> {{ event.org.name }}</p>
+<p><strong>Description:</strong> {{ event.description }}</p>
+<p><strong>Start:</strong> {{ event.start_at|date:"F j, Y, g:i A" }}</p>
+<p><strong>End:</strong> {% if event.end_at %}{{ event.end_at|date:"F j, Y, g:i A" }}{% else %}N/A{% endif %}</p>
+
+<p><strong>Location:</strong> {{ event.location.name }}</p>
+<p><strong>Address:</strong> {{ event.location.address1 }}{% if event.location.address2 %}, {{ event.location.address2 }}{% endif %}, {{ event.location.city }}, {{ event.location.state }} {{ event.location.postal_code }}</p>
+
+<p><strong>Free:</strong> {% if event.is_free %}Yes{% else %}No{% endif %}</p>
+
+<p><strong>URL:</strong> {% if event.url %}<a href="{{ event.url }}">{{ event.url }}</a>{% else %}N/A{% endif %}</p>
+
+<p><strong>Capacity:</strong> {% if event.capacity %}{{ event.capacity }}{% else %}Unlimited{% endif %}</p>
+
+<p><strong>Categories:</strong> 
+    {% if event.categories.all %}
+        {% for cat in event.categories.all %}
+            {{ cat.name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    {% else %}
+        None
+    {% endif %}
+</p>
+
+<p><strong>Published:</strong> {% if event.is_published %}Yes{% else %}No{% endif %}</p>
+
+<form method="POST">
+    {% csrf_token %}
+    {% if user.is_authenticated %}
+    {% if already_registered %}
+         <button type="submit" class="register-button" disabled>Register</button>
+    {% else %}
+        <button type="submit" name="action" value="register" class="register-button">Register</button>
+   {% endif %}
+   {% endif %}
+</form>
+
+{% endblock %}

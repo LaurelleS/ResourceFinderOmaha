@@ -51,7 +51,9 @@
       <div class="events-grid">
         {% for event in events %}
           <article class="event-card">
-            <div class="event-title">{{ event.title }}</div>
+            <div class="event-title">
+             <a href="{% url 'eventDetail' event.id %}">{{event.title}}</a>
+            </div>
 
             <div class="event-meta">
               {{ event.start_at|date:"M j, Y · g:i a" }}
@@ -83,7 +85,6 @@
               {% if event.capacity %}
                 • Capacity: {{ event.capacity }}
               {% endif %}
-              <button id="register-button" type="submit">Details</button>
             </div>
           </article>
         {% endfor %}
