@@ -35,7 +35,18 @@
 
     <div class="pill-row">
       {% if query or selected_category %}
-        <span>Filters applied</span>
+        <span>
+          <strong>Active Filters:</strong>
+          {% if query %}
+             "{{ query }}"
+          {% endif %}
+          {% if selected_category %}
+             Category: {{ selected_category }}
+          {% endif %}
+        </span>
+        <a href="{% url 'home' %}">
+          <span style="font-weight: bold; margin-left: 10px;">(Reset)</span>
+        </a>
       {% else %}
         <span>Tip: try “food”, “youth”, or “job training”.</span>
       {% endif %}
@@ -55,12 +66,15 @@
              <a href="{% url 'eventDetail' event.id %}">{{event.title}}</a>
             </div>
 
-            <div class="event-meta">
+            <div class="event-meta event-date">
               {{ event.start_at|date:"M j, Y · g:i a" }}
-              {% if event.location %}
-                • {{ event.location.name|default:event.location.address1 }}
-              {% endif %}
             </div>
+            
+              {% if event.location %}
+              <div class="event-meta event-location">
+                • {{ event.location.name|default:event.location.address1 }}
+              </div>
+              {% endif %}
 
             {% if event.org %}
               <div class="event-meta">
@@ -92,7 +106,7 @@
     </section>
   {% else %}
     <div class="empty-state">
-      <strong>No events match this search yet.</strong>
+      <strong>No events or resources found.</strong>
       Try clearing filters or using a more general keyword.
     </div>
   {% endif %}
