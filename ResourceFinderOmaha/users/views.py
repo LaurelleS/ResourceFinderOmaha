@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from events.models import Organization
 
 
@@ -81,3 +81,7 @@ def signuporgs(request):
         group.user_set.add(org)
         return redirect('login')
     return render(request, 'signuporgs.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

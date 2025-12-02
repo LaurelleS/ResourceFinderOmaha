@@ -31,4 +31,5 @@ urlpatterns = [
     path('signuporgs/', user_views.signuporgs, name='signuporgs'),
     path('viewevent/<int:event_id>/', event_views.viewEvent, name='viewEvent'),
     path('eventdetail/<int:event_id>/', event_views.eventDetail, name='eventDetail'),
+    path('logout/', user_views.logout_view, name='logout'),
 ]

@@ -211,6 +211,11 @@
       <a href="{% url 'home' %}">Home</a>
       <a href="#">My Events</a>
       <a href="#">My Account</a>
+      {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+      {% else %}
+        <a href="{% url 'login' %}">Logout</a>
+      {% endif %}
     </nav>
   </header>
 
