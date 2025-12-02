@@ -71,12 +71,36 @@
         justify-content: center;
         align-items: center;
     }
+
+    .alert {
+    padding: 12px 20px;
+    border-radius: 6px;
+    color: white;
+    margin-bottom: 12px;
+    font-weight: 500;
+    width: 500px;
+    text-align: center;
+    }
+    .alert.success { background-color: #28a745; }
+    .alert.error { background-color: #f6727f; }
+    .alert.warning { background-color: #ffc107; color: black; }
+    .alert.info { background-color: #17a2b8; }
      </style>
 
   </head>
 
  <title>HTML Login Form</title>
 </head>
+{% csrf_token %}
+{% if messages %}
+  <div>
+    {% for message in messages %}
+      <div class="alert {{ message.tags }}">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 
 <body>
     <div class="main">

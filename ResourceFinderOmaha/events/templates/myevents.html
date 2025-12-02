@@ -4,24 +4,53 @@
 
 {% block content %}
 
-<div class="search-card">
-    {% if events %}
-    {% for event in events %}
+{% if is_org %}
+<div style="display: flex; justify-content: center;">
+    <a class="register-button" href="{% url 'addEvent' %}">New Event</a>
+</div>
+{% endif %}
+
+<div>
+    {% if registrations %}
+    {% for reg in registrations %}
         {% if is_org %}
-            <div class="search-card">
-                <a href="{% url 'viewEvent' event.id %}">{{event.title}}</a>
-                <p class="hello-name">{{event.org.name}}</p>
+            <div class="search-card two-columns">
+                <a href="{% url 'viewEvent' reg.event.id %}">{{reg.event.title}}</a>
             </div>
         {% else %}
-            <div>
-                <a href="{% url 'eventDetail' event.id %}">{{event.title}}</a>
-                <p>{{event.org.name}}</p>
-            </div>
+            <div class="search-card two-columns">
+                <div>
+                    <a href="{% url 'eventDetail' reg.event.id %}">{{reg.event.title}}</a>
         {% endif %}
+                    <p>{{reg.event.org.name}}</p>
+                </div>
+                
+                <div>
+                    
+                    <p style="text-align: right;">{{reg.event.start_at}} - {{reg.event.end_at}}</p>
+                    <p style="text-align: right;">
+                        {% if reg.event.is_free %}
+                            Free event
+                        {% else %}
+                            Paid event
+                        {% endif %}
+                </p>
+                 <form method="post" action="{% url 'deleteRegistration' reg.id %}" style="text-align: right;">
+                {% csrf_token %}
+                <button class="register-button" type="submit" name="action" value="unregister">Unregister</button>
+                </form>       
+            </div>
+            
+            </div>
+        
 
     {% endfor %}
     {% else %}
-        <div class="search-card"><p>No Registered Events to Show</p></div>
+        {% if is_org %}
+        <div class="search-card"><p>You haven't created any events.</p></div>
+        {% else %}
+        <div class="search-card"><p>You haven't registered for any events.</p></div>
+        {% endif %}
     {% endif %}
 </div>
 

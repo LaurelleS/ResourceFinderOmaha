@@ -41,14 +41,25 @@ def home(request):
 
 def myevents(request):
     user = request.user
-    regs = Registration.objects.filter(user=user, status='registered')
-    events = [r.event for r in regs]
     is_org = request.user.groups.filter(name='Organizations').exists()
-    context = {
-         "events" : events,
-         "is_org" : is_org
-    }
+
+    if not is_org:
+        regs = Registration.objects.filter(user=user, status='registered')
+        events = [r.event for r in regs]
+        context = {
+            "events" : events,
+            "is_org" : is_org,
+            'registrations' : regs
+        }
+    else:
+        my_events = list(Event.objects.filter(org=user.organization))
+        context = {
+            'events' : my_events,
+            'is_org' : is_org,
+        }
+
     return render(request, 'myevents.html', context)
+
 
 def viewEvent(request, event_id):
     event = Event.objects.get(pk=event_id)
@@ -64,32 +75,36 @@ def viewEvent(request, event_id):
  
 
 def eventDetail(request, event_id):
-    event = Event.objects.get(pk=event_id)
+    event = Event.objects.get(pk=event_id) 
 
     if request.method == 'POST':
         action = request.POST.get('action')
 
         if action == 'register':
-            user = request.user
 
             if not request.user.is_authenticated:
                 messages.error(request, 'You must be logged in to register.')
                 return redirect('login')
             
             else:
-                Registration.objects.create(
-                    user=request.user,
-                    event=event
-                )
-                messages.success(request, "You are now registered for this event!")
+                already_registered = Registration.objects.filter(
+                user=request.user,
+                event=event).exists() 
+                if already_registered:
+                    messages.info(request, 'You are already registered for this event')
+                else:
+                    Registration.objects.create(
+                        user=request.user,
+                        event=event
+                    )
+                    messages.success(request, "You are now registered for this event!")
             return redirect('eventDetail', event_id=event_id)
-        
+    
     already_registered = False
     already_registered = Registration.objects.filter(
             user=request.user,
-            event=event).exists() 
-    
-    if already_registered:
+            event=event).exists()
+    if already_registered and not messages.get_messages(request):
                 messages.info(request, 'You are already registered for this event')
    
     context = {
@@ -98,5 +113,33 @@ def eventDetail(request, event_id):
     }
         
     return render(request, "event_detail.html", context)
+
+def addEvent(request):
+    if request.method == 'GET':
+        form = EventForm()
+        return render(request, 'viewEvent.html', {'form' : form})
+    else:
+        form = EventForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+
+        return redirect('myevents')
+    
+def delete_reg(request, reg_id):
+    reg = get_object_or_404(Registration, id=reg_id)
+    if request.method == 'POST':
+        reg.delete()
+        messages.success(request, "Registration Deleted.")
+        return redirect('myevents')
+    
+    is_org = request.user.groups.filter(name='Organizations').exists()
+    my_events = list(Event.objects.filter(org=request.user.organization))
+    context = {
+        'events' : my_events,
+        'is_org' : is_org,
+        'registrations': reg
+    }
+
+    return render(request, 'myevents.html', context)
 
     

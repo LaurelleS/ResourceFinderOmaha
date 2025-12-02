@@ -2,8 +2,16 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LoginView
 from events.models import Organization
 
+
+class CustomLoginView(LoginView):
+    template_name = "registration/login.html"
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid username or password.")
+        return super().form_invalid(form)
 
 def login(request):
     if request.method == 'POST':
@@ -42,6 +50,7 @@ def signup(request):
             messages.error(request, 'User name is already in use')
             return redirect('/signup/')
         
+        messages.success(request, 'Account created!')
         user = User.objects.create_user(
             username=username,
             email=email
@@ -65,15 +74,23 @@ def signuporgs(request):
         # check if username is in use 
         if User.objects.filter(username=username).exists():
             messages.error(request, 'User name is already in use')
-            return redirect('signup')
+            return redirect('signuporgs')
         # check if org name is in use
         if Organization.objects.filter(name=name).exists():
             messages.error(request, 'Organization name is already in use')
-            return redirect('signup')
+            return redirect('signuporgs')
         
+        messages.success(request, 'Account created!')
         org = User.objects.create_user(
             username=username,
             email=email,
+        )
+        Organization.objects.create(
+            org=org,
+            name=name,
+            description=desc,
+            email=email,
+            phone=phone
         )
         org.set_password(password)
         org.save()
