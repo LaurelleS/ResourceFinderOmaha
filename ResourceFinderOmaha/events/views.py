@@ -106,10 +106,12 @@ def eventDetail(request, event_id):
             event=event).exists()
     if already_registered and not messages.get_messages(request):
                 messages.info(request, 'You are already registered for this event')
-   
+                
+    is_org = request.user.groups.filter(name='Organizations').exists()
     context = {
         "event" : event,
-        "already_registered" : already_registered
+        "already_registered" : already_registered,
+        'is_org' : is_org
     }
         
     return render(request, "event_detail.html", context)

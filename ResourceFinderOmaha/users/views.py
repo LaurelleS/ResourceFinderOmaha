@@ -27,7 +27,7 @@ def login(request): # Original was login(request)
             #return redirect('/home/')
         
         if user.groups.filter(name='Organizations').exists(): # Delete this if it doesnt work
-            return redirect('/orgshome/')
+            return redirect('home')
         return redirect('home')
     
     return render(request, 'registration/login.html')

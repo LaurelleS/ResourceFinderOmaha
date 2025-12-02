@@ -37,7 +37,7 @@
 <form method="POST">
     {% csrf_token %}
     {% if user.is_authenticated %}
-    {% if already_registered %}
+    {% if already_registered  or is_org %}
          <button type="submit" class="register-button" disabled>Register</button>
     {% else %}
         <button type="submit" name="action" value="register" class="register-button">Register</button>
