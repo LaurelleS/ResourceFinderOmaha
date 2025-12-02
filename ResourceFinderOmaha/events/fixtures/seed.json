@@ -2,6 +2,7 @@
   {"model": "events.category", "pk": 1, "fields": {"name": "Food Pantry", "slug": "food-pantry"}},
   {"model": "events.category", "pk": 2, "fields": {"name": "Health", "slug": "health"}},
   {"model": "events.category", "pk": 3, "fields": {"name": "Cultural", "slug": "cultural"}},
+
   {
     "model": "auth.user",
     "pk": 1,
@@ -19,6 +20,18 @@
     "pk": 2,
     "fields": {
       "username": "foodnet_admin",
+      "password": "123",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "groups": [3]
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "username": "durham_admin",
       "password": "123",
       "is_superuser": false,
       "is_staff": false,
@@ -47,6 +60,16 @@
     "created_at": "2025-12-01T12:00:00Z",
     "updated_at": "2025-12-01T12:00:00Z"
   }},
+  {"model": "events.organization", "pk": 3, "fields": {
+    "name": "The Durham Museum",
+    "org": 3,
+    "description": "Preserving, protecting, and exhibiting the history of Omaha and the surrounding region.",
+    "website": "https://www.durhammuseum.org",
+    "email": "info@durhammuseum.org",
+    "is_verified": true,
+    "created_at": "2025-12-02T17:00:00Z",
+    "updated_at": "2025-12-02T17:00:00Z"
+  }},
 
   {"model": "events.location", "pk": 1, "fields": {
     "name": "Downtown Library",
@@ -66,7 +89,17 @@
     "created_at": "2025-12-01T12:00:00Z",
     "updated_at": "2025-12-01T12:00:00Z"
   }},
-   {
+  {"model": "events.location", "pk": 3, "fields": {
+    "name": "The Durham Museum",
+    "address1": "801 S 10th St",
+    "city": "Omaha",
+    "state": "NE",
+    "postal_code": "68108",
+    "created_at": "2025-12-02T17:00:00Z",
+    "updated_at": "2025-12-02T17:00:00Z"
+  }},
+  
+  {
     "model": "events.event",
     "pk": 1,
     "fields": {
@@ -159,6 +192,25 @@
       "is_published": true,
       "created_at": "2025-12-01T12:00:00Z",
     "updated_at": "2025-12-01T12:00:00Z"
+    }
+  },
+  {
+    "model": "events.event",
+    "pk": 6,
+    "fields": {
+      "org": 3,
+      "title": "Permanent History Exhibits",
+      "description": "General admission to explore the historic exhibits, including the restored Union Station lobby.",
+      "start_at": "2025-12-15T10:00:00Z",
+      "end_at": "2025-12-15T16:00:00Z",
+      "location": 3,
+      "is_free": false,
+      "url": "https://www.durhammuseum.org/visit/",
+      "capacity": 500,
+      "categories": [3],
+      "is_published": true,
+      "created_at": "2025-12-02T17:00:00Z",
+    "updated_at": "2025-12-02T17:00:00Z"
     }
   }
 ]
