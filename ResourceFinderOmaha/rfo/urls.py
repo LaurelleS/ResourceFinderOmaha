@@ -37,7 +37,7 @@ urlpatterns = [
     path('myevents/', event_views.myevents, name='myevents'),
     path('viewevent/<int:event_id>/', event_views.viewEvent, name='viewEvent'),
     path('add/', event_views.addEvent, name='addEvent'),
-    path('delete/<int:reg_id>/', event_views.delete_reg, name='deleteRegistration')
+    path('delete/<int:reg_id>/', event_views.delete_reg, name='deleteRegistration'),
     
     path('orgshome/', user_views.orgshome, name='orgshome'), #Delete this if it doesnt work
 ]
