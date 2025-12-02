@@ -201,8 +201,32 @@
     display: block;
     margin-bottom: 15px;
   }
+  
+  .two-columns {
+    display: flex;
+    gap: 1.5rem;
+}
 
+.two-columns > div {
+    flex: 1;
+}
   </style>
+
+  <script>
+  // Wait 3 seconds, then fade out messages
+  setTimeout(() => {
+    const messages = document.getElementById('messages-container');
+    if (messages) {
+      messages.style.transition = 'opacity 0.5s ease-out';
+      messages.style.opacity = '0';
+      
+      // Remove from DOM after fade completes
+      setTimeout(() => {
+        messages.style.display = 'none';
+      }, 500); // Match the transition duration
+    }
+  }, 3000); // 3000ms = 3 seconds
+</script>
 
   {% block extra_head %}{% endblock %}
 </head>
@@ -210,21 +234,29 @@
   <header>
     <div class="logo">ResourceFinderOmaha</div>
     <nav>
-      {% csrf_token %}
-      <p class="hello-name">Welcome {{ user.username }}!</p>
-      <!-- these routes already exist in urls.py -->
-      <a href="{% url 'home' %}">Home</a>
-      <a href="{% url 'myevents' %}">My Events</a>
-      <a href="#">My Account</a>
-      {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-      {% else %}
-        <a href="{% url 'login' %}">Logout</a>
-      {% endif %}
-    </nav>
+    {% csrf_token %}
+    <p class="hello-name">Welcome {{ user.username }}!</p>
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'myevents' %}">My Events</a>
+    <a href="#">My Account</a>{% if user.is_authenticated %}<a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to log out of ResourceFinderOmaha?');">
+            Logout
+        </a>
+    {% else %}<a href="{% url 'login' %}">Login</a>
+    {% endif %}
+</nav>
+
   </header>
 
   <main>
+    {% if messages %}
+<div id="messages-container">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} message-alert">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
     {% block content %}{% endblock %}
   </main>
 </body>
