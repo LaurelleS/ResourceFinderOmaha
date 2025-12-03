@@ -104,14 +104,14 @@ def signuporgs(request):
         group, created = Group.objects.get_or_create(name='Organizations') # Delete get_or_create if it doesnt work / created
         org.groups.add(group) # groups.user_set.add(org) is original if it doesnt work
 
-        Organization.objects.create(  #Delete all of this if it doesnt work
-            org=org,                    #
-            name=name,                  #
-            description=desc,           #
-            email=email,                #
-            phone=phone,                #
-            is_verified=False,          #
-        )
+    #    Organization.objects.create(   # Delete all of this if it doesnt work
+    #        org=org,                    #
+    #        name=name,                  #
+    #        description=desc,           #
+    #        email=email,                #
+    #        phone=phone,                #
+    #        is_verified=False,          #
+    #    )
 
         return redirect('login')
     return render(request, 'signuporgs.html')
