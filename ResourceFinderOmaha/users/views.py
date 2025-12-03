@@ -3,6 +3,15 @@ from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout # Delete as auth_login if it doesnt work
 from events.models import Organization
+from django.contrib.auth.views import LoginView
+
+
+class CustomLoginView(LoginView):
+    template_name = "registration/login.html"
+
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid username or password.")
+        return super().form_invalid(form)
 
 
 def login(request): # Original was login(request)
