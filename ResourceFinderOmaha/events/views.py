@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
-from .models import Event, Category, Registration, Location
 from django.db.models import Q
-from .forms import EventForm
 from django.core.exceptions import PermissionDenied
+
+from .models import Event, Category, Registration, Location
+from .forms import EventForm
 
 
 def home(request):
@@ -27,132 +28,148 @@ def home(request):
     events = events.distinct()
 
     categories = Category.objects.order_by("name")
-    is_org = request.user.groups.filter(name='Organizations').exists()
+    is_org = request.user.groups.filter(name="Organizations").exists()
 
     context = {
         "events": events,
         "categories": categories,
         "query": query,
         "selected_category": category_slug,
-        "is_org": is_org
+        "is_org": is_org,
     }
     return render(request, "home.html", context)
 
 
 def myevents(request):
     user = request.user
-    is_org = request.user.groups.filter(name='Organizations').exists()
+    is_org = request.user.groups.filter(name="Organizations").exists()
 
     if not is_org:
-        regs = Registration.objects.filter(user=user, status='registered')
+        # Regular user: show events they are registered for
+        regs = Registration.objects.filter(user=user, status="registered")
         events = [r.event for r in regs]
         context = {
-            "events" : events,
-            "is_org" : is_org,
-            'registrations' : regs
+            "events": events,
+            "is_org": is_org,
+            "registrations": regs,
         }
     else:
+        # Org user: show events they own
         my_events = list(Event.objects.filter(org=user.organization))
         context = {
-            'orgevents' : my_events,
-            'is_org' : is_org,
+            "orgevents": my_events,
+            "is_org": is_org,
         }
 
-    return render(request, 'myevents.html', context)
+    return render(request, "myevents.html", context)
 
 
 def viewEvent(request, event_id):
-    event = Event.objects.get(pk=event_id)
-    if request.method == 'POST':
+    """
+    Edit an existing event (for orgs).
+    Uses the same template as addEvent, but with instance=event.
+    """
+    event = get_object_or_404(Event, pk=event_id)
+
+    if request.method == "POST":
         form = EventForm(request.POST, instance=event)
         if form.is_valid():
             form.save()
-            return redirect('myevents')
+            messages.success(request, "Event updated successfully.")
+            return redirect("myevents")
     else:
         form = EventForm(instance=event)
 
-        return render(request, 'viewEvent.html', {'form' : form})
- 
+    return render(request, "viewEvent.html", {"form": form, "event": event})
+
 
 def eventDetail(request, event_id):
-    event = Event.objects.get(pk=event_id) 
+    event = Event.objects.get(pk=event_id)
 
-    if request.method == 'POST':
-        action = request.POST.get('action')
+    if request.method == "POST":
+        action = request.POST.get("action")
 
-        if action == 'register':
+        if action == "register":
 
             if not request.user.is_authenticated:
-                messages.error(request, 'You must be logged in to register.')
-                return redirect('login')
-            
+                messages.error(request, "You must be logged in to register.")
+                return redirect("login")
+
             else:
                 already_registered = Registration.objects.filter(
-                user=request.user,
-                event=event).exists() 
+                    user=request.user,
+                    event=event,
+                ).exists()
                 if already_registered:
-                    messages.info(request, 'You are already registered for this event')
+                    messages.info(request, "You are already registered for this event")
                 else:
                     Registration.objects.create(
                         user=request.user,
-                        event=event
+                        event=event,
                     )
                     messages.success(request, "You are now registered for this event!")
-            return redirect('eventDetail', event_id=event_id)
-    
-    already_registered = False
-    already_registered = Registration.objects.filter(
-            user=request.user,
-            event=event).exists()
-    if already_registered and not messages.get_messages(request):
-                messages.info(request, 'You are already registered for this event')
+            return redirect("eventDetail", event_id=event_id)
 
-    is_org = request.user.groups.filter(name='Organizations').exists()
+    already_registered = Registration.objects.filter(
+        user=request.user,
+        event=event,
+    ).exists()
+    if already_registered and not messages.get_messages(request):
+        messages.info(request, "You are already registered for this event")
+
+    is_org = request.user.groups.filter(name="Organizations").exists()
     context = {
-        "event" : event,
-        "already_registered" : already_registered,
-        'is_org' : is_org
+        "event": event,
+        "already_registered": already_registered,
+        "is_org": is_org,
     }
-        
+
     return render(request, "event_detail.html", context)
 
+
 def addEvent(request):
-    if request.method == 'GET':
+    """
+    Create a new event for the logged-in organization.
+    Also uses the viewEvent.html template, but with event=None.
+    """
+    if request.method == "GET":
         form = EventForm()
-        return render(request, 'viewEvent.html', {'form' : form})
+        return render(request, "viewEvent.html", {"form": form, "event": None})
     else:
         form = EventForm(request.POST, request.FILES)
         if form.is_valid():
-            location_name = form.cleaned_data['location']
-            location, _ = Location.objects.get_or_create(name=location_name,
+            location_name = form.cleaned_data["location"]
+            location, _ = Location.objects.get_or_create(
+                name=location_name,
                 defaults={
-                'city': 'Omaha',
-                'state': 'NE'
-            })
+                    "city": "Omaha",
+                    "state": "NE",
+                },
+            )
             event = form.save(commit=False)
             event.location = location
             event.org = request.user.organization
             event.save()
-            return redirect('myevents')
+            messages.success(request, "Event created successfully.")
+            return redirect("myevents")
         else:
-            messages.error(request, "Please correct the errors below.") 
-        return render(request, 'viewEvent.html', {'form' : form})
-    
+            messages.error(request, "Please correct the errors below.")
+        return render(request, "viewEvent.html", {"form": form, "event": None})
+
+
 def delete_reg(request, reg_id):
     reg = get_object_or_404(Registration, id=reg_id)
-    if request.method == 'POST':
+    if request.method == "POST":
         reg.delete()
         messages.success(request, "Registration Deleted.")
-        return redirect('myevents')
-    
-    is_org = request.user.groups.filter(name='Organizations').exists()
+        return redirect("myevents")
+
+    is_org = request.user.groups.filter(name="Organizations").exists()
     my_events = list(Event.objects.filter(org=request.user.organization))
     context = {
-        'events' : my_events,
-        'is_org' : is_org,
-        'registrations': reg
+        "events": my_events,
+        "is_org": is_org,
+        "registrations": reg,
     }
 
-    return render(request, 'myevents.html', context)
-
-    
+    return render(request, "myevents.html", context)
